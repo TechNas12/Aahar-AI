@@ -138,9 +138,44 @@
     .show-error {
       display: block;
     }
+    /* Add blur overlay styles */
+    .blur-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      display: none;
+    }
+    /* Update popup styles */
+    #popup-card {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      color: #222;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-family: 'Segoe UI', sans-serif;
+      z-index: 1000;
+      font-weight: 500;
+      text-align: center;
+      min-width: 300px;
+    }
+    #popup-message {
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 <body>
+  <!-- Add blur overlay -->
+  <div class="blur-overlay"></div>
   <!-- Header -->
   <header>
     <div class="logo-container">
@@ -149,7 +184,7 @@
     </div>
     <nav>
       <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="aahar-homepage-updated.html">Home</a></li>
       </ul>
     </nav>
   </header>
@@ -217,22 +252,31 @@
       getAuth,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
-      updateProfile
+      updateProfile,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
   
     // Your Firebase configuration
     const firebaseConfig = {
-    apiKey: "AIzaSyDto1yf3TVZH433_NTha4uAjk6Sw9iXGUM",
-    authDomain: "aahar---ai.firebaseapp.com",
-    projectId: "aahar---ai",
-    storageBucket: "aahar---ai.firebasestorage.app",
-    messagingSenderId: "581210113604",
-    appId: "1:581210113604:web:8f56ac445056365e5dde11"
-  };
+      apiKey: "AIzaSyDto1yf3TVZH433_NTha4uAjk6Sw9iXGUM",
+      authDomain: "aahar---ai.firebaseapp.com",
+      projectId: "aahar---ai",
+      storageBucket: "aahar---ai.firebasestorage.app",
+      messagingSenderId: "581210113604",
+      appId: "1:581210113604:web:8f56ac445056365e5dde11"
+    };
   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+  
+    // Check if user is already authenticated
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is already logged in, redirect to main page
+        window.location.href = 'main.html';
+      }
+    });
   
     // Toggle between Login and Register tabs
     const loginTab = document.getElementById('login-tab');
@@ -258,12 +302,15 @@
     function showPopup(message, duration = 3000) {
       const popup = document.getElementById("popup-card");
       const msg = document.getElementById("popup-message");
+      const overlay = document.querySelector(".blur-overlay");
   
       msg.innerText = message;
       popup.style.display = "block";
+      overlay.style.display = "block";
   
       setTimeout(() => {
         popup.style.display = "none";
+        overlay.style.display = "none";
       }, duration);
     }
   

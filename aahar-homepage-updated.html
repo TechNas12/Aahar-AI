@@ -226,6 +226,58 @@
             }
         }
     </style>
+    <!-- Add Firebase Scripts -->
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDto1yf3TVZH433_NTha4uAjk6Sw9iXGUM",
+            authDomain: "aahar---ai.firebaseapp.com",
+            projectId: "aahar---ai",
+            storageBucket: "aahar---ai.firebasestorage.app",
+            messagingSenderId: "581210113604",
+            appId: "1:581210113604:web:8f56ac445056365e5dde11"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check authentication state and update UI
+        onAuthStateChanged(auth, (user) => {
+            const authLinks = document.querySelector('.auth-links');
+            if (user) {
+                // User is logged in, show profile and logout
+                authLinks.innerHTML = `
+                    <div class="user-profile">
+                        <span>${user.displayName || 'User'}</span>
+                        <a href="main.html" class="register-link">My Profile</a>
+                    </div>
+                `;
+            } else {
+                // User is not logged in, show login/register links
+                authLinks.innerHTML = `
+                    <a href="registration-page.html" class="login-link">Login</a>
+                    <a href="registration-page.html" class="register-link">Register</a>
+                `;
+            }
+        });
+
+        // Handle CTA button click
+        document.querySelector('.cta-button').addEventListener('click', () => {
+            const user = auth.currentUser;
+            if (user) {
+                // User is logged in, redirect to main page
+                window.location.href = 'main.html';
+            } else {
+                // User is not logged in, redirect to registration page
+                window.location.href = 'registration-page.html';
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Header Section -->

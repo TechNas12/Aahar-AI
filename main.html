@@ -254,27 +254,112 @@
                 gap: 1rem;
             }
         }
+
+        /* Add blur overlay styles */
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none;
+        }
+
+        /* Update popup styles */
+        #popup-card {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            color: #222;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', sans-serif;
+            z-index: 1000;
+            font-weight: 500;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        #popup-message {
+            font-size: 1.1rem;
+        }
     </style>
+    <!-- Add blur overlay -->
+    <div class="blur-overlay"></div>
+    <!-- Add popup HTML -->
+    <div id="popup-card">
+        <span id="popup-message"></span>
+    </div>
     <!-- Add auth check script at the very beginning -->
-    <script>
-        // Check if user is logged in
-        function checkAuth() {
-            const user = localStorage.getItem('user');
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDto1yf3TVZH433_NTha4uAjk6Sw9iXGUM",
+            authDomain: "aahar---ai.firebaseapp.com",
+            projectId: "aahar---ai",
+            storageBucket: "aahar---ai.firebasestorage.app",
+            messagingSenderId: "581210113604",
+            appId: "1:581210113604:web:8f56ac445056365e5dde11"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Show popup toast
+        function showPopup(message, duration = 3000) {
+            const popup = document.getElementById("popup-card");
+            const msg = document.getElementById("popup-message");
+            const overlay = document.querySelector(".blur-overlay");
+            
+            msg.innerText = message;
+            popup.style.display = "block";
+            overlay.style.display = "block";
+            
+            setTimeout(() => {
+                popup.style.display = "none";
+                overlay.style.display = "none";
+            }, duration);
+        }
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
             if (!user) {
-                // No user found in localStorage, redirect to login page
-                window.location.href = 'registration-page.html';
-                return false;
+                showPopup("No valid user data, redirecting to login page...");
+                setTimeout(() => {
+                    window.location.href = 'registration-page.html';
+                }, 2000);
+            } else {
+                // User is authenticated, update UI
+                document.getElementById('user-name').textContent = user.displayName || 'User';
             }
-            return true;
-        }
-        
-        // Execute auth check when page loads
-        if (!checkAuth()) {
-            // This prevents the rest of the page from loading if not authenticated
-            document.addEventListener('DOMContentLoaded', function() {
-                document.body.innerHTML = '<p>Redirecting to login...</p>';
-            });
-        }
+        });
+
+        // Handle logout
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                localStorage.removeItem('user');
+                showPopup("Logging out...");
+                setTimeout(() => {
+                    window.location.href = 'registration-page.html';
+                }, 2000);
+            } catch (error) {
+                console.error('Logout failed:', error);
+                showPopup("Error during logout: " + error.message);
+            }
+        });
     </script>
 </head>
 <body>
@@ -287,8 +372,8 @@
         <nav>
             <ul>
                 <li><a href="aahar-homepage-updated.html">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
                 <li class="auth-links">
                     <div class="user-profile">
                         <span id="user-name">User</span>
@@ -409,30 +494,12 @@
     </footer>
 
     <script>
-        // Display user name
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                const userData = JSON.parse(localStorage.getItem('user'));
-                if (userData && userData.displayName) {
-                    document.getElementById('user-name').textContent = userData.displayName;
-                }
-            } catch (e) {
-                console.error('Error parsing user data:', e);
-            }
-            
-            // Handle logout
-            document.getElementById('logout-btn').addEventListener('click', function() {
-                localStorage.removeItem('user');
-                window.location.href = 'registration-page.html';
-            });
-            
-            // Form submission handler
-            document.getElementById('preferences-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Here you would collect the form data and send it to your backend
-                alert('Your preferences have been submitted. We are creating your personalized diet plan!');
-                // Redirect to diet plan page or show loading screen
-            });
+        // Form submission handler
+        document.getElementById('preferences-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would collect the form data and send it to your backend
+            alert('Your preferences have been submitted. We are creating your personalized diet plan!');
+            // Redirect to diet plan page or show loading screen
         });
     </script>
 </body>
