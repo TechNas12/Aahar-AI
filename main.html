@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAHAR AI - User Preferences</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FF9800;
+            --accent-color: #FFC107;
+            --text-color: #333333;
+            --light-color: #F5F5F5;
+            --dark-color: #2E7D32;
+            --error-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Add these styles for footer positioning */
+        html, body {
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Content wrapper to push footer down */
+        .content-wrapper {
+            flex: 1;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .brand-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .auth-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 500;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-color);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        .unit {
+            position: relative;
+        }
+
+        .unit span {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .unit input {
+            padding-right: 30px;
+        }
+
+        /* Submit Button */
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: var(--dark-color);
+        }
+
+        /* Footer - modified to stick at bottom */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .form-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+    <!-- Add auth check script at the very beginning -->
+    <script>
+        // Check if user is logged in
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                // No user found in localStorage, redirect to login page
+                window.location.href = 'registration-page.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // Execute auth check when page loads
+        if (!checkAuth()) {
+            // This prevents the rest of the page from loading if not authenticated
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.innerHTML = '<p>Redirecting to login...</p>';
+            });
+        }
+    </script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-placeholder">AA</div>
+            <span class="brand-name">AAHAR AI</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="aahar-homepage-updated.html">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li class="auth-links">
+                    <div class="user-profile">
+                        <span id="user-name">User</span>
+                        <button class="logout-btn" id="logout-btn">Logout</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Content Wrapper to push footer down -->
+    <div class="content-wrapper">
+        <!-- User Preferences Form -->
+        <div class="form-container">
+            <div class="form-header">
+                <h1>Tell Us About Yourself</h1>
+                <p>Help us create a personalized diet plan that matches your body, lifestyle, and preferences</p>
+            </div>
+            
+            <form id="preferences-form">
+                <!-- Physical Attributes -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="height">Height (cm)</label>
+                        <div class="unit">
+                            <input type="number" id="height" name="height" min="100" max="250" placeholder="Enter your height" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <div class="unit">
+                            <input type="number" id="weight" name="weight" min="30" max="250" placeholder="Enter your weight" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" min="10" max="100" placeholder="Enter your age" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="non-binary">Non-binary</option>
+                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Activity & Goals -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="activity-level">Activity Level</label>
+                        <select id="activity-level" name="activity-level" required>
+                            <option value="" disabled selected>Select your activity level</option>
+                            <option value="sedentary">Sedentary (little to no exercise)</option>
+                            <option value="lightly-active">Lightly active (light exercise 1-3 days/week)</option>
+                            <option value="moderately-active">Moderately active (moderate exercise 3-5 days/week)</option>
+                            <option value="very-active">Very active (hard exercise 6-7 days/week)</option>
+                            <option value="extremely-active">Extremely active (very hard exercise & physical job)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fitness-goal">Fitness Goal</label>
+                        <select id="fitness-goal" name="fitness-goal" required>
+                            <option value="" disabled selected>Select your fitness goal</option>
+                            <option value="weight-loss">Weight loss</option>
+                            <option value="weight-maintenance">Weight maintenance</option>
+                            <option value="weight-gain">Weight gain</option>
+                            <option value="muscle-gain">Muscle gain</option>
+                            <option value="improved-fitness">Improved fitness</option>
+                            <option value="balanced-nutrition">Balanced nutrition</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Dietary Preferences & Conditions -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dietary-preference">Dietary Preference</label>
+                        <select id="dietary-preference" name="dietary-preference" required>
+                            <option value="" disabled selected>Select your dietary preference</option>
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                            <option value="non-vegetarian">Non-vegetarian</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="special-conditions">Special Conditions</label>
+                        <select id="special-conditions" name="special-conditions">
+                            <option value="" selected>None</option>
+                            <option value="diabetes">Diabetes</option>
+                            <option value="hypertension">Hypertension</option>
+                            <option value="heart-disease">Heart Disease</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-button">Create My Diet Plan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">© 2025 AAHAR AI. All rights reserved. Providing personalized Indian diet recommendations.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Display user name
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const userData = JSON.parse(localStorage.getItem('user'));
+                if (userData && userData.displayName) {
+                    document.getElementById('user-name').textContent = userData.displayName;
+                }
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+            }
+            
+            // Handle logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('user');
+                window.location.href = 'registration-page.html';
+            });
+            
+            // Form submission handler
+            document.getElementById('preferences-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Here you would collect the form data and send it to your backend
+                alert('Your preferences have been submitted. We are creating your personalized diet plan!');
+                // Redirect to diet plan page or show loading screen
+            });
+        });
+    </script>
+</body>
+</html>
