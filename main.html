@@ -13,8 +13,21 @@
             --light-color: #F5F5F5;
             --dark-color: #2E7D32;
             --error-color: #f44336;
+            --bg-color: #F5F5F5;
+            --card-bg: #ffffff;
+            --border-color: #ddd;
+            --shadow-color: rgba(0,0,0,0.1);
         }
         
+        [data-theme="dark"] {
+            --text-color: #ffffff;
+            --light-color: #1a1a1a;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+            --shadow-color: rgba(0,0,0,0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -31,11 +44,12 @@
         }
 
         body {
-            background-color: var(--light-color);
+            background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Content wrapper to push footer down */
@@ -45,9 +59,9 @@
 
         /* Header Styles */
         header {
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px var(--shadow-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -123,10 +137,10 @@
         .form-container {
             max-width: 800px;
             margin: 2rem auto;
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 10px;
             padding: 2rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px var(--shadow-color);
         }
 
         .form-header {
@@ -165,10 +179,12 @@
         input, select {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
 
         input:focus, select:focus {
@@ -290,6 +306,148 @@
         #popup-message {
             font-size: 1.1rem;
         }
+
+        /* Add new styles for profile section */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-bottom: 1rem;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-picture-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--primary-color);
+            cursor: pointer;
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        .profile-picture-placeholder i {
+            display: none;
+        }
+
+        .profile-picture-input {
+            display: none;
+        }
+
+        .profile-name-input {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border: none;
+            border-bottom: 2px solid var(--primary-color);
+            background: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .profile-name-input:focus {
+            outline: none;
+            border-bottom-color: var(--dark-color);
+        }
+
+        .profile-name-input::placeholder {
+            color: #999;
+        }
+
+        .upload-text {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Add validation styles */
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        .show-error {
+            display: block;
+        }
+        /* Remove the invalid/valid input styling */
+        input:invalid, input:valid {
+            border-color: #ddd;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        /* Dark mode toggle styles */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Add styles for change picture text */
+        .change-picture-text {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            background: var(--card-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-picture-container:hover .change-picture-text {
+            opacity: 1;
+        }
     </style>
     <!-- Add blur overlay -->
     <div class="blur-overlay"></div>
@@ -297,6 +455,10 @@
     <div id="popup-card">
         <span id="popup-message"></span>
     </div>
+    <!-- Add theme toggle button -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+        Dark Mode
+    </button>
     <!-- Add auth check script at the very beginning -->
     <script type="module">
         // Firebase imports
@@ -394,6 +556,35 @@
             </div>
             
             <form id="preferences-form">
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-picture-container">
+                        <img id="profile-picture" class="profile-picture" style="display: none;">
+                        <label for="profile-picture-input" class="profile-picture-placeholder">
+                            👤
+                        </label>
+                        <input type="file" id="profile-picture-input" class="profile-picture-input" accept="image/*">
+                        <div class="change-picture-text">Click to change picture</div>
+                    </div>
+                    <input type="text" id="profile-name" class="profile-name-input" placeholder="Enter your name">
+                    <div class="upload-text">Click to upload profile picture</div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="Enter 10-digit phone number" required>
+                        <div class="error-message" id="phone-error">Please enter a valid 10-digit phone number</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthdate">Date of Birth</label>
+                        <input type="date" id="birthdate" name="birthdate" required>
+                        <div class="error-message" id="birthdate-error">Please enter a valid date of birth</div>
+                    </div>
+                </div>
+
                 <!-- Physical Attributes -->
                 <div class="form-row">
                     <div class="form-group">
@@ -494,12 +685,183 @@
     </footer>
 
     <script>
-        // Form submission handler
-        document.getElementById('preferences-form').addEventListener('submit', function(e) {
+        // Add validation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .error-message {
+                color: var(--error-color);
+                font-size: 0.9rem;
+                margin-top: 0.3rem;
+                display: none;
+            }
+            .show-error {
+                display: block;
+            }
+            input:invalid, input:valid {
+                border-color: #ddd;
+            }
+            input:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Phone number validation
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const phoneError = document.getElementById('phone-error');
+            const phonePattern = /^[0-9]{10}$/;
+            
+            if (!phonePattern.test(e.target.value)) {
+                phoneError.classList.add('show-error');
+            } else {
+                phoneError.classList.remove('show-error');
+            }
+        });
+
+        // Birthdate validation
+        document.getElementById('birthdate').addEventListener('change', function(e) {
+            const birthdateError = document.getElementById('birthdate-error');
+            const today = new Date();
+            const birthdate = new Date(e.target.value);
+            const age = today.getFullYear() - birthdate.getFullYear();
+            
+            if (age < 10 || age > 100) {
+                birthdateError.classList.add('show-error');
+                birthdateError.textContent = 'Age must be between 10 and 100 years';
+            } else {
+                birthdateError.classList.remove('show-error');
+            }
+        });
+
+        // Profile picture upload handler
+        document.getElementById('profile-picture-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('profile-picture');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    document.querySelector('.profile-picture-placeholder').style.display = 'none';
+                    document.querySelector('.upload-text').textContent = 'Profile picture uploaded';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Add click handler to profile picture for changing
+        document.getElementById('profile-picture').addEventListener('click', function(e) {
             e.preventDefault();
-            // Here you would collect the form data and send it to your backend
-            alert('Your preferences have been submitted. We are creating your personalized diet plan!');
-            // Redirect to diet plan page or show loading screen
+            document.getElementById('profile-picture-input').click();
+        });
+
+        // Add click handler to profile picture container for changing
+        document.querySelector('.profile-picture-container').addEventListener('click', function(e) {
+            if (document.getElementById('profile-picture').style.display === 'block') {
+                document.getElementById('profile-picture-input').click();
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('preferences-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate phone number
+            const phone = document.getElementById('phone').value;
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                document.getElementById('phone-error').classList.add('show-error');
+                return;
+            }
+
+            // Validate birthdate
+            const birthdate = new Date(document.getElementById('birthdate').value);
+            const today = new Date();
+            const age = today.getFullYear() - birthdate.getFullYear();
+            if (age < 10 || age > 100) {
+                document.getElementById('birthdate-error').classList.add('show-error');
+                return;
+            }
+            
+            // Get profile data
+            const formData = {
+                name: document.getElementById('profile-name').value,
+                profilePicture: document.getElementById('profile-picture').src,
+                phone: phone,
+                birthdate: birthdate.toISOString().split('T')[0],
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                age: age,
+                gender: document.getElementById('gender').value,
+                activityLevel: document.getElementById('activity-level').value,
+                fitnessGoal: document.getElementById('fitness-goal').value,
+                dietaryPreference: document.getElementById('dietary-preference').value,
+                specialConditions: document.getElementById('special-conditions').value
+            };
+
+            try {
+                // Show loading state
+                const submitButton = document.querySelector('.submit-button');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Creating your diet plan...';
+
+                // Send data to backend
+                const response = await fetch('http://localhost:3000/api/user-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Redirect to profile page with user ID
+                    window.location.href = `profile.html?id=${data.userId}`;
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Error creating your diet plan. Please try again later.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create My Diet Plan';
+            }
+        });
+
+        // Theme handling
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Set initial theme
+        function setTheme(isDark) {
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme === 'dark');
+        } else {
+            setTheme(prefersDarkScheme.matches);
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            setTheme(currentTheme === 'light');
+        });
+
+        // Listen for system theme changes
+        prefersDarkScheme.addListener((e) => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches);
+            }
         });
     </script>
 </body>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAHAR AI - Your Profile</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FF9800;
+            --accent-color: #FFC107;
+            --text-color: #333333;
+            --light-color: #F5F5F5;
+            --dark-color: #2E7D32;
+            --error-color: #f44336;
+            --bg-color: #F5F5F5;
+            --card-bg: #ffffff;
+            --border-color: #ddd;
+            --shadow-color: rgba(0,0,0,0.1);
+        }
+        
+        [data-theme="dark"] {
+            --text-color: #ffffff;
+            --light-color: #1a1a1a;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+            --shadow-color: rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-info h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+
+        .stat-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .diet-plan {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            margin-top: 2rem;
+        }
+
+        .diet-plan h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .diet-plan-content {
+            white-space: pre-line;
+        }
+
+        /* Dark mode toggle styles */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <img id="profile-picture" class="profile-picture" src="" alt="Profile Picture">
+            <div class="profile-info">
+                <h1 id="user-name">Loading...</h1>
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <h3>Age</h3>
+                        <p id="user-age">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Height</h3>
+                        <p id="user-height">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Weight</h3>
+                        <p id="user-weight">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Activity Level</h3>
+                        <p id="user-activity">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="diet-plan">
+            <h2>Your Personalized Diet Plan</h2>
+            <div id="diet-plan-content" class="diet-plan-content">
+                Loading your diet plan...
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" id="themeToggle">
+        Dark Mode
+    </button>
+
+    <script>
+        // Get user ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('id');
+
+        // Fetch user profile data
+        async function fetchProfile() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/user-profile/${userId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const profile = data.profile;
+                    
+                    // Update profile picture
+                    document.getElementById('profile-picture').src = profile.profilePicture;
+                    
+                    // Update user info
+                    document.getElementById('user-name').textContent = profile.name;
+                    document.getElementById('user-age').textContent = `${profile.age} years`;
+                    document.getElementById('user-height').textContent = `${profile.height} cm`;
+                    document.getElementById('user-weight').textContent = `${profile.weight} kg`;
+                    document.getElementById('user-activity').textContent = profile.activityLevel;
+                    
+                    // Update diet plan
+                    document.getElementById('diet-plan-content').textContent = profile.dietPlan;
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+                document.getElementById('diet-plan-content').textContent = 'Error loading profile data. Please try again later.';
+            }
+        }
+
+        // Theme handling
+        const themeToggle = document.getElementById('themeToggle');
+        
+        function setTheme(isDark) {
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme === 'dark');
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            setTheme(currentTheme === 'light');
+        });
+
+        // Fetch profile data when page loads
+        fetchProfile();
+    </script>
+</body>
+</html> 
